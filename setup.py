@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='dinosauron',
-    version='0.1',
+    version='0.1.0a1',
     url='https://github.com/allred/dinosauron',
     license='MIT',
     author='Mike Allred',
