@@ -70,6 +70,7 @@ def background_proc(targets, options, event_callback=None):
 def scan_many(targets, options):
     still_running = True 
     results = []
+    results_parsed = []
     for target in targets:
         results.append(background_proc(target, options))
     while still_running:
@@ -80,11 +81,13 @@ def scan_many(targets, options):
         if count_running == 0:
             still_running = False
         else:
-            print("{} running".format(count_running))
+            #print("{} running".format(count_running))
             sleep(1)
     for result in results:
         parsed = NmapParser.parse(result.stdout) 
-        print_scan(parsed)
+    #    print_scan(parsed)
+        results_parsed.append(parsed)
+    return results_parsed 
 
 if __name__ == "__main__":
     scan_many(["127.0.0.1", "scanme.nmap.org"], "-sV")

@@ -6,20 +6,32 @@ class Chui:
     """ character based UI """
 
     def __init__(self):
-        pass
+        self.stdscr = curses.initscr()
+        #self.stdscr.border(1)
+
+    def scan(self, targets, options):
+        results = dino_nmap.scan_many(targets, options)
+        return results
+
+    def draw(self, contents=[]):
+        self.stdscr.clear()
+        curses.start_color()
+        self.stdscr.addstr("dinosauron " + "=" * (curses.COLS - 11))
+        for text in contents:
+            self.stdscr.addstr(str(text))
+        self.stdscr.refresh()
 
     def run(self):
-        stdscr = curses.initscr()
-        curses.start_color()
-        stdscr.addstr("dinosauron " + "=" * (curses.COLS - 11))
-
+        self.draw()
+        results = self.scan(["scanme.nmap.org"], "-sV")
+        self.draw([results])
         while True:
-            c = stdscr.getch()
+            c = self.stdscr.getch()
             if c == ord('q'):
                 break
 
         curses.nocbreak()
-        stdscr.keypad(False)
+        self.stdscr.keypad(False)
         curses.echo()
         curses.endwin()
 
