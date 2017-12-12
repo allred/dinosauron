@@ -1,8 +1,17 @@
 import curses
+import signal
+import sys
 from dinosauron import dino_nmap
 from time import sleep
 
-class Chui:
+"""
+def signal_handler(signal, frame):
+    print('ctl c')
+    Cli.cleanup()
+signal.signal(signal.SIGINT, signal_handler)
+"""
+
+class Cli:
     """ character based UI """
 
     def __init__(self):
@@ -21,18 +30,22 @@ class Chui:
             self.stdscr.addstr(str(text))
         self.stdscr.refresh()
 
-    def run(self):
-        self.draw()
-        results = self.scan(["scanme.nmap.org"], "-sV")
-        self.draw([results])
-        while True:
-            c = self.stdscr.getch()
-            if c == ord('q'):
-                break
-
+    def cleanup(self):
         curses.nocbreak()
         self.stdscr.keypad(False)
         curses.echo()
         curses.endwin()
 
-
+    def run(self):
+        try:
+            self.draw()
+            results = self.scan(["scanme.nmap.org"], "-sV")
+            self.draw([results])
+            while True:
+                c = self.stdscr.getch()
+                if c == ord('q'):
+                    break
+                self.cleanup()
+        except KeyboardInterrupt:
+            self.cleanup()
+            sys.exit()
