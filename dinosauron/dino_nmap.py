@@ -8,7 +8,7 @@ def do_scan(targets, options):
     rc = nmproc.run()
     if rc != 0:
         print("nmap scan failed: {0}".format(nmproc.stderr))
-    print(type(nmproc.stdout))
+    #print(type(nmproc.stdout))
 
     try:
         parsed = NmapParser.parse(nmproc.stdout)
@@ -66,9 +66,8 @@ def background_proc(targets, options, event_callback=None):
     nmap_proc.run_background()
     return nmap_proc
 
-
 def scan_many(targets, options):
-    still_running = True 
+    still_running = True
     results = []
     results_parsed = []
     for target in targets:
@@ -84,10 +83,10 @@ def scan_many(targets, options):
             #print("{} running".format(count_running))
             sleep(1)
     for result in results:
-        parsed = NmapParser.parse(result.stdout) 
+        parsed = NmapParser.parse(result.stdout)
     #    print_scan(parsed)
         results_parsed.append(parsed)
-    return results_parsed 
+    return results_parsed
 
 if __name__ == "__main__":
     scan_many(["127.0.0.1", "scanme.nmap.org"], "-sV")

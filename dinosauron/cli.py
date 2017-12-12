@@ -4,13 +4,6 @@ import sys
 from dinosauron import dino_nmap
 from time import sleep
 
-"""
-def signal_handler(signal, frame):
-    print('ctl c')
-    Cli.cleanup()
-signal.signal(signal.SIGINT, signal_handler)
-"""
-
 class Cli:
     """ character based UI """
 
