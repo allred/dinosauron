@@ -96,16 +96,3 @@ class DinoNmap:
         for host in self.do_scan(targets, "-sL").hosts:
             hosts.append(host.address)
         return hosts
-
-if __name__ == "__main__":
-    scan_many(["localhost"], "-sV")
-
-#print("rc: {0} output: {1}".format(nmap_proc.rc, nmap_proc.summary))
-
-#nm = NmapProcess("scanme.nmap.org", options="-sV")
-#rc = nm.run()
-#if nm.rc == 0:
-    #print(nm.stdout)
-#    print(nm)
-#else:
-#    print(nm.stderr)
