@@ -1,5 +1,4 @@
 import unittest
-from dinosauron import cli
 from dinosauron import dino_nmap
 from unittest.mock import create_autospec
 
