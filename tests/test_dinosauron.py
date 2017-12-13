@@ -2,7 +2,7 @@ import unittest
 from dinosauron import dinosauron 
 from unittest.mock import create_autospec
 
-class TestDinoNmap(unittest.TestCase):
+class TestDinosauron(unittest.TestCase):
     def setUp(self):
         self.d = dinosauron.Dinosauron()
 
