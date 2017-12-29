@@ -1,8 +1,10 @@
+import asyncio
 import subprocess
+from collections import defaultdict
 
 class Dinosauron:
     def __init__(self):
-        pass
+        self.results_dig = defaultdict(lambda: "")
 
     def dig_mdns(self, address):
         """
@@ -16,3 +18,18 @@ class Dinosauron:
             return out
         else:
             return None
+
+    async def diggy(self, address):
+        result = self.dig_mdns(address)
+        self.results_dig[address] = result
+        return result
+
+    def dig_async(self, addresses):
+        tasks = []
+        ioloop = asyncio.get_event_loop()
+        for a in addresses:
+            tasks.append(ioloop.create_task(self.diggy(a)))
+        wait_tasks = asyncio.wait(tasks)
+        ioloop.run_until_complete(wait_tasks)
+        ioloop.close()
+        return self.results_dig

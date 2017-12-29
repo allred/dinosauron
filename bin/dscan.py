@@ -8,16 +8,20 @@ sys.path.append(os.path.join(os.path.dirname(sys.argv[0]), '..'))
 from dinosauron import dinosauron
 from dinosauron import dino_nmap
 
+
 def scan(targets):
     t_start = int(time.time())
-    d = dinosauron.Dinosauron()
     dn = dino_nmap.DinoNmap()
-    report = dn.do_scan(targets, "-Pn -T5 -F")
+    d = dinosauron.Dinosauron()
+    host_list = dn.scan_list(targets)
+    args_nmap = "-Pn -T5 -F"
+    #results_mdns = d.dig_async(host_list[0:1)
+    report = dn.do_scan(targets, args_nmap)
     for host in report.hosts:
         mdns_out = d.dig_mdns(host.address)
         if mdns_out or len(host.get_ports()) > 0:
-            d = host.get_dict()
-            hostnames = d.get("hostnames", "")
+            host_dict = host.get_dict()
+            hostnames = host_dict.get("hostnames", "")
             hostname = hostnames.split(' ')[0]
             if hostname == '' and mdns_out:
                 hostname = mdns_out.strip().decode('ascii')
@@ -28,8 +32,9 @@ def scan(targets):
     footer = f'{s_elapsed}s'
     print(footer)
 
+
 if __name__ == "__main__":
     target = "localhost"
     if len(sys.argv) > 1:
         target = sys.argv[1]
-        scan([target])
+    scan([target])
