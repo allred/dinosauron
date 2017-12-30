@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import datetime
+import dns.resolver
 import json
 import os
 import sys
@@ -15,10 +16,9 @@ def scan(targets):
     d = dinosauron.Dinosauron()
     host_list = dn.scan_list(targets)
     args_nmap = "-Pn -T5 -F"
-    #results_mdns = d.dig_async(host_list[0:1)
     report = dn.do_scan(targets, args_nmap)
     for host in report.hosts:
-        mdns_out = d.dig_mdns(host.address)
+        mdns_out = d.query_mdns(host.address)
         if mdns_out or len(host.get_ports()) > 0:
             host_dict = host.get_dict()
             hostnames = host_dict.get("hostnames", "")

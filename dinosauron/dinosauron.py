@@ -1,10 +1,26 @@
 import asyncio
+import dns.resolver
 import subprocess
 from collections import defaultdict
+from dns.exception import DNSException
 
 class Dinosauron:
     def __init__(self):
         self.results_dig = defaultdict(lambda: "")
+        self.resolver = dns.resolver.Resolver()
+        self.resolver.nameservers = ["224.0.0.251"]
+        self.resolver.port = 5353
+        self.resolver.timeout = 1
+        self.resolver.lifetime = 1
+
+    def query_mdns(self, address):
+        answer = None
+        record = '.'.join(reversed(address.split('.'))) + ".in-addr.arpa"
+        try:
+            answer = self.resolver.query(record, "PTR")
+        except DNSException:
+            answer = None
+        return answer
 
     def dig_mdns(self, address):
         """
